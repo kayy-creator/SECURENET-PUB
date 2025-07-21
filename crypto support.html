@@ -1,0 +1,197 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crypto Support Agent</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Crypto Help Desk</h1>
+    <p>Your dedicated crypto support agent for safe and smart digital finance</p>
+    <a href="https://wa.me/17423840996" target="_blank" class="whatsapp-btn">💬 Chat on WhatsApp</a>
+  </header>
+
+  <section id="services">
+    <h2>What I Help With</h2>
+    <ul>
+      <li>🪙 Buying & selling crypto securely</li>
+      <li>🔐 Wallet setup and recovery</li>
+      <li>📊 Market insights & price alerts</li>
+      <li>📈 Portfolio tracking and analysis</li>
+    </ul>
+  </section>
+
+  <section id="faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <button class="faq-question">What is the safest way to buy Bitcoin?</button>
+      <div class="faq-answer">Use regulated platforms like Coinbase or Binance, and enable two-factor authentication.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">How do crypto wallets work?</button>
+      <div class="faq-answer">They store your private keys and allow secure transactions on the blockchain.</div>
+    </div>
+  </section>
+
+  <section id="testimonials">
+    <h2>What Clients Say</h2>
+    <blockquote>“Super professional and fast! Helped me recover my wallet in no time.” — Ada O.</blockquote>
+    <blockquote>“Trustworthy advice every time I need to make an investment decision.” — Michael T.</blockquote>
+  </section>
+
+  <section id="contact">
+    <h2>Contact Form</h2>
+    <form>
+      <input type="text" placeholder="Your Name" required />
+      <input type="email" placeholder="Your Email" required />
+      <textarea placeholder="Your message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Crypto Support Agent | All rights reserved</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
+<style>/* style.css */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #0a0a0a;
+  color: #eee;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #1c1c1c;
+  text-align: center;
+  padding: 2rem;
+}
+
+.whatsapp-btn {
+  background-color: #25D366;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+section {
+  padding: 2rem;
+  max-width: 800px;
+  margin: auto;
+}
+
+.faq-item {
+  margin-bottom: 1rem;
+}
+
+.faq-question {
+  background: #333;
+  color: #fff;
+  padding: 0.75rem;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.faq-answer {
+  display: none;
+  padding: 0.5rem;
+  background: #222;
+  margin-top: 0.5rem;
+}
+
+form input, form textarea {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 4px;
+}
+
+form button {
+  background-color: #25D366;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+blockquote {
+  background: #1e1e1e;
+  padding: 1rem;
+  border-left: 5px solid #25D366;
+  margin: 1rem 0;
+}
+</style>
+<script>// app.js
+document.querySelectorAll('.faq-question').forEach(button => {
+  button.addEventListener('click', () => {
+    const answer = button.nextElementSibling;
+    answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+  });
+});
+const express = require("express");
+const axios = require("axios");
+const cors = require("cors");
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(cors());
+
+app.get("/prices", async (req, res) => {
+  try {
+    const response = await axios.get(
+      "https://api.coingecko.com/api/v3/coins/markets",
+      {
+        params: {
+          vs_currency: "usd",
+          ids: "bitcoin,ethereum,solana,cardano,xrp",
+        },
+      }
+    );
+    res.json(response.data);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch prices" });
+  }
+});
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+async function fetchCryptoPrices() {
+  try {
+    const res = await fetch("http://localhost:3000/prices"); // Adjust for deployment
+    const coins = await res.json();
+    const coinList = document.getElementById("coin-list");
+    coinList.innerHTML = "";
+
+    coins.forEach(coin => {
+      const coinItem = document.createElement("div");
+      coinItem.innerHTML = `
+        <strong>${coin.name}</strong> - $${coin.current_price}
+      `;
+      coinList.appendChild(coinItem);
+    });
+  } catch (error) {
+    console.error("Error fetching prices:", error);
+  }
+}
+
+fetchCryptoPrices();
+setInterval(fetchCryptoPrices, 60000); // Refresh every 60 seconds
+</script>
